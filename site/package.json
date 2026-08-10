@@ -1,0 +1,10 @@
+{
+  "name": "knr-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Site institucional da KNR — HTML/CSS/JS estático, gerado por build.js (zero dependências de npm).",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js && npx --yes serve dist"
+  }
+}

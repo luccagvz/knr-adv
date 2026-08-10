@@ -1,0 +1,67 @@
+// Fonte: knr.adv.br/socios/ (texto original, mojibake corrigido).
+module.exports = [
+  {
+    slug: 'marcelo-kruschewsky',
+    nome: 'Marcelo Kruschewsky',
+    cargo: 'Sócio-Fundador',
+    areas: ['Trabalhista'],
+    formacao: [
+      'Bacharel em Direito pela Faculdade de Tecnologia e Ciências – FTC (2007)',
+      'Inscrito na OAB/BA sob o nº 24.003',
+    ],
+    bio: 'Ocupou o cargo de Country Manager do Fiesta Hotel Group antes de se dedicar à advocacia. Sócio do escritório Kruschewsky & Nunes Ribeiro Advogados Associados, atua como advogado na área Trabalhista.',
+  },
+  {
+    slug: 'diego-ribeiro',
+    nome: 'Diego Ribeiro',
+    cargo: 'Sócio',
+    areas: ['Cível'],
+    formacao: [
+      'Bacharel em Direito pela Faculdade de Direito do Centro Universitário da Bahia – FIB (2005)',
+      'Inscrito na OAB/BA sob o nº 22.096',
+      'Especialização em Responsabilidade Médica – Faculdade de Direito da Universidade de Coimbra (2006)',
+      'Mestre em Ciências Políticas – Faculdade de Direito da Universidade de Coimbra (2009)',
+      'Pós-graduando em Direito Eleitoral com Habilitação em Magistério Superior – Faculdades Integradas Ipitanga Unibahia Fundacem',
+    ],
+    bio: 'Ocupou o cargo de Procurador Geral do Município de Itaparica/BA. Membro da Comissão de Relações Internacionais da OAB/BA no triênio 2007/2009 e da Comissão de Seleção e Estágio da OAB/BA no triênio 2013/2015. Juiz Eleitoral Substituto do Tribunal Regional Eleitoral da Bahia. Sócio do escritório, atua como advogado na área Cível.',
+  },
+  {
+    slug: 'sergio-nunes',
+    nome: 'Sérgio Nunes',
+    cargo: 'Sócio',
+    areas: ['Cível'],
+    formacao: [
+      'Bacharel em Direito pela Universidade Católica do Salvador – UCSAL (2002)',
+      'Inscrito na OAB/BA sob o nº 18.667',
+      'Mestre em Políticas Sociais e Cidadania pela UCSAL',
+      'Especialização em Direitos Humanos – Escola Superior do Ministério Público da Bahia',
+      'Pós-graduando em Direito do Estado – Escola da Magistratura da Bahia',
+    ],
+    bio: 'Ocupou o cargo de Assessor Jurídico do Tribunal de Justiça da Bahia (09/2003 a 05/2009). Sócio do escritório, atua como advogado na área Cível.',
+  },
+  {
+    slug: 'juliana-andrade-gavazza',
+    nome: 'Juliana Andrade Gavazza',
+    cargo: 'Sócia',
+    areas: ['Tributária', 'Aduaneira', 'Administrativa'],
+    formacao: [
+      'Bacharela em Direito pelo Centro Universitário Jorge Amado (2006)',
+      'Inscrita na OAB/BA sob o nº 23.215',
+      'Especialização em Direito Previdenciário pelo JusPodivm',
+    ],
+    bio: 'Atuou como Coordenadora Adjunta e Professora de Direito Administrativo na Faculdade Dom Pedro II. Assessora Especial da Procuradoria Geral do Município de Lauro de Freitas. Sócia do escritório, atua nas áreas Tributária, Aduaneira e Administrativa.',
+  },
+  {
+    slug: 'carmen-dolores-bittencourt',
+    nome: 'Carmen Dolores Bittencourt',
+    cargo: 'Sócia — Coordenadora do Núcleo Penal',
+    areas: ['Penal'],
+    formacao: [
+      'Bacharela em Direito pela Universidade Federal da Bahia (UFBA)',
+      'Pós-graduada pela Escola de Magistrados da Bahia (EPAM)',
+      'Pós-graduanda em Ciências Criminais pela PUC Minas Gerais',
+      'Especialização em Direito Público (Constitucional e Administrativo), Gestão Pública, Lavagem de Capitais e Crimes contra a Propriedade Intelectual',
+    ],
+    bio: 'Delegada aposentada da Polícia Civil da Bahia, aprovada em concurso público em 1995. Em 25 anos de carreira, foi corregedora por sete anos, além de ter exercido a direção do Departamento de Crimes Contra o Patrimônio (DCCP), a direção interina do extinto Departamento de Crimes Contra a Vida (DCCV) e atuado como delegada de defesa do consumidor e delegada territorial. É a mais nova sócia da KNR e está à frente do Núcleo Penal.',
+  },
+];

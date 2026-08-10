@@ -13,9 +13,16 @@ Thumbs.db
 .claude/telemetry/
 .claude/file-history/
 .claude/backups/
+.claude/settings.local.json
 
 # Dependências
 node_modules/
+
+# Build do Next.js
+.next/
+
+# Build do site (gerado por `node site/build.js`)
+site/dist/
 
 # Arquivos temporários
 *.log
