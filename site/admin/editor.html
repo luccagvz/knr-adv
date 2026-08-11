@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title id="page-title">Nova notícia — KNR Admin</title>
+<link rel="stylesheet" href="/css/fonts.css">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/admin/css/admin.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css">
+</head>
+<body>
+  <div class="admin-shell">
+    <header class="admin-topbar">
+      <div class="admin-topbar__brand">
+        <img src="/img/logo-knr.png" alt="" style="height:24px">
+        KNR Admin
+      </div>
+      <div class="admin-topbar__user">
+        <span id="user-email"></span>
+        <button id="logout-btn" type="button">Sair</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <div class="admin-page-header">
+        <div>
+          <h1 id="form-title">Nova notícia</h1>
+          <p><a href="/admin/">&larr; Voltar pra lista</a></p>
+        </div>
+      </div>
+
+      <div id="alert-box"></div>
+
+      <form id="news-form">
+        <div class="editor-grid">
+          <div class="editor-main">
+            <div class="field">
+              <label for="title">Título</label>
+              <input type="text" id="title" required>
+            </div>
+
+            <div class="field">
+              <label for="slug">Slug (URL)</label>
+              <input type="text" id="slug" required>
+              <p class="hint">/insights/<span id="slug-preview"></span>/</p>
+            </div>
+
+            <div class="field">
+              <label for="excerpt">Resumo</label>
+              <textarea id="excerpt" rows="3" maxlength="300" required></textarea>
+              <p class="hint">Aparece na listagem de Insights e como fallback de SEO. Até 300 caracteres.</p>
+            </div>
+
+            <div class="field">
+              <label for="quill-editor">Conteúdo</label>
+              <div id="quill-editor"></div>
+            </div>
+          </div>
+
+          <div class="editor-side">
+            <div class="field">
+              <label>Imagem de capa</label>
+              <div class="cover-preview" id="cover-preview">Nenhuma imagem</div>
+              <input type="file" id="cover-input" accept="image/jpeg,image/png,image/webp">
+              <div id="cover-progress" class="upload-progress"></div>
+            </div>
+
+            <div class="field">
+              <label for="category">Categoria</label>
+              <select id="category">
+                <option value="Institucional">Institucional</option>
+                <option value="Reconhecimento">Reconhecimento</option>
+                <option value="Carreira">Carreira</option>
+                <option value="__nova__">+ Nova categoria…</option>
+              </select>
+              <input type="text" id="category-new" placeholder="Nome da categoria" style="display:none;margin-top:var(--size-2)">
+            </div>
+
+            <div class="field">
+              <label for="published_at">Data de publicação</label>
+              <input type="date" id="published_at">
+              <p class="hint">Status atual: <strong id="status-label">rascunho</strong></p>
+            </div>
+
+            <hr style="border:none;border-top:1px solid var(--color-border);margin:var(--size-6) 0">
+
+            <div class="field">
+              <label for="seo_title">SEO Title</label>
+              <input type="text" id="seo_title" maxlength="70">
+              <p class="hint">Se vazio, usa o título da notícia.</p>
+            </div>
+            <div class="field">
+              <label for="seo_description">SEO Description</label>
+              <textarea id="seo_description" rows="3" maxlength="160"></textarea>
+              <p class="hint">Se vazio, usa o resumo. Até 160 caracteres.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-actions">
+          <button type="submit" class="btn-admin" data-action="save-draft">Salvar rascunho</button>
+          <button type="button" class="btn-admin" id="preview-btn">Visualizar</button>
+          <button type="submit" class="btn-admin btn-admin--primary" id="publish-btn" data-action="publish">Publicar</button>
+          <button type="button" class="btn-admin btn-admin--danger" id="delete-btn" style="display:none">Excluir</button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
+  <script src="/admin/js/env.js"></script>
+  <script src="/admin/js/supabaseClient.js"></script>
+  <script src="/admin/js/auth.js"></script>
+  <script src="/admin/js/imageUpload.js"></script>
+  <script src="/admin/js/editor.js"></script>
+</body>
+</html>

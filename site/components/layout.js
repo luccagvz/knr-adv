@@ -2,11 +2,11 @@ const seoHead = require('./seoHead');
 const header = require('./header');
 const footer = require('./footer');
 
-module.exports = function layout({ title, description, path, bodyClass = '', transparentHeader = false, content }) {
+module.exports = function layout({ title, description, path, bodyClass = '', transparentHeader = false, content, ogTitle, ogDescription, ogImage }) {
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-${seoHead({ title, description, path })}
+${seoHead({ title, description, path, ogTitle, ogDescription, ogImage })}
 </head>
 <body class="${bodyClass}">
 ${header({ transparent: transparentHeader })}

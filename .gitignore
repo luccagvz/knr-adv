@@ -24,6 +24,11 @@ node_modules/
 # Build do site (gerado por `node site/build.js`)
 site/dist/
 
+# Variáveis de ambiente locais (Supabase, etc.)
+.env
+site/.env
+site/.netlify/
+
 # Arquivos temporários
 *.log
 *.tmp

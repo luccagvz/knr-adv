@@ -52,6 +52,67 @@
     revealEls.forEach(function (el) { observer.observe(el); });
   }
 
+  document.querySelectorAll('[data-carousel]').forEach(function (section) {
+    var track = section.querySelector('[data-carousel-track]');
+    var prevBtn = section.querySelector('[data-carousel-prev]');
+    var nextBtn = section.querySelector('[data-carousel-next]');
+    if (!track) return;
+
+    function slideStep() {
+      var slide = track.querySelector('.carousel-slide');
+      if (!slide) return track.clientWidth;
+      var gap = parseFloat(window.getComputedStyle(track).columnGap || '0') || 0;
+      return slide.getBoundingClientRect().width + gap;
+    }
+
+    function advance(dir) {
+      var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      var atStart = track.scrollLeft <= 4;
+      if (dir > 0 && atEnd) track.scrollTo({ left: 0, behavior: 'smooth' });
+      else if (dir < 0 && atStart) track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+      else track.scrollBy({ left: slideStep() * dir, behavior: 'smooth' });
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', function () { advance(-1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { advance(1); });
+
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var timer = null;
+    var canScroll = false;
+
+    function play() {
+      if (reduceMotion || timer || !canScroll) return;
+      timer = window.setInterval(function () { advance(1); }, 5000);
+    }
+    function pause() {
+      if (timer) { window.clearInterval(timer); timer = null; }
+    }
+
+    // Sem overflow (poucos cards / tela larga) não tem o que rolar — some
+    // com as setas e desliga o autoplay em vez de deixá-los sem efeito.
+    function updateOverflow() {
+      canScroll = track.scrollWidth > track.clientWidth + 4;
+      var nav = section.querySelector('.news-carousel__nav');
+      if (nav) nav.style.display = canScroll ? '' : 'none';
+      if (canScroll) play();
+      else pause();
+    }
+
+    section.addEventListener('mouseenter', pause);
+    section.addEventListener('mouseleave', play);
+    section.addEventListener('touchstart', pause, { passive: true });
+    section.addEventListener('focusin', pause);
+    section.addEventListener('focusout', play);
+
+    var resizeTimer = null;
+    window.addEventListener('resize', function () {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(updateOverflow, 200);
+    });
+
+    updateOverflow();
+  });
+
   var form = document.getElementById('contact-form');
   if (form) {
     form.addEventListener('submit', function (e) {

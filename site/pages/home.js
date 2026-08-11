@@ -5,6 +5,7 @@ const partnerSpotlight = require('../components/partnerSpotlight');
 const leadershipList = require('../components/leadershipList');
 const testimonialLarge = require('../components/testimonialLarge');
 const articleCard = require('../components/articleCard');
+const newsCarousel = require('../components/newsCarousel');
 const ctaBand = require('../components/ctaBand');
 
 const empresa = require('../content/empresa');
@@ -13,7 +14,7 @@ const socios = require('../content/socios');
 const clientes = require('../content/clientes');
 const insights = require('../content/insights');
 
-module.exports = function home() {
+module.exports = function home({ recentesCarrossel = [] } = {}) {
   const destaqueAreas = areas.filter((a) => a.destaque);
   const recentInsights = insights.slice(0, 3);
   const founder = socios[0];
@@ -59,6 +60,8 @@ module.exports = function home() {
   </section>
 
   <div class="image-breaker" style="background-image:url('/img/panorama-caminho-arvores.webp')"></div>
+
+  ${newsCarousel(recentesCarrossel)}
 
   <section class="section section--alt">
     <div class="container">

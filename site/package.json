@@ -2,9 +2,12 @@
   "name": "knr-site",
   "private": true,
   "version": "1.0.0",
-  "description": "Site institucional da KNR — HTML/CSS/JS estático, gerado por build.js (zero dependências de npm).",
+  "description": "Site institucional da KNR — HTML/CSS/JS estático, gerado por build.js. Única dependência de npm é sanitize-html, usada em tempo de build (Node) pra sanitizar o conteúdo das notícias vindas do CMS — não é enviada ao navegador.",
   "scripts": {
     "build": "node build.js",
     "dev": "node build.js && npx --yes serve dist"
+  },
+  "dependencies": {
+    "sanitize-html": "^2.13.0"
   }
 }
