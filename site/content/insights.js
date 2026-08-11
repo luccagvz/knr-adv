@@ -11,28 +11,12 @@ module.exports = [
       'Kruschewsky e Nunes Ribeiro Advogados Associados é citado entre os 500 escritórios mais admirados do país, em publicação da Análise Advocacia 500.',
   },
   {
-    slug: 'jenner-kruschewsky-comissao-sociedades-advogados-oab',
-    imagem: '/img/insights/jenner-kruschewsky-comissao-sociedades-advogados-oab.webp',
-    titulo: 'Jenner Augusto Kruschewsky é nomeado para comissão da OAB',
-    data: '2019-04-04',
-    categoria: 'Institucional',
-    resumo: 'Jenner Augusto Kruschewsky é nomeado para integrar a Comissão das Sociedades de Advogados da OAB.',
-  },
-  {
     slug: 'diego-ribeiro-posse-juiz-substituto-tre-ba',
     imagem: '/img/insights/diego-ribeiro-posse-juiz-substituto-tre-ba.webp',
     titulo: 'Diego Freitas Ribeiro toma posse como juiz substituto do TRE-BA',
     data: '2017-03-21',
     categoria: 'Carreira',
     resumo: 'O advogado Diego Freitas Ribeiro é empossado juiz substituto do Tribunal Regional Eleitoral da Bahia.',
-  },
-  {
-    slug: 'jenner-kruschewsky-diretoria-juridica-yacht-clube',
-    imagem: '/img/insights/jenner-kruschewsky-diretoria-juridica-yacht-clube.webp',
-    titulo: 'Jenner Kruschewsky assume a Diretoria Jurídica do Yacht Clube da Bahia',
-    data: '2015-08-05',
-    categoria: 'Institucional',
-    resumo: 'Jenner Kruschewsky assume a Diretoria Jurídica do Yacht Clube da Bahia durante período de modernização institucional.',
   },
   {
     slug: 'diego-ribeiro-comissao-selecao-oab',
