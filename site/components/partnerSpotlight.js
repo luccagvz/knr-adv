@@ -9,9 +9,12 @@ function initials(nome) {
 }
 
 module.exports = function partnerSpotlight(socio) {
+  const mark = socio.foto
+    ? `<img class="partner-spotlight__mark" src="${socio.foto}" alt="${socio.nome}" width="340" height="425">`
+    : `<div class="partner-spotlight__mark" aria-hidden="true">${initials(socio.nome)}</div>`;
   return `
   <div class="partner-spotlight reveal">
-    <div class="partner-spotlight__mark" aria-hidden="true">${initials(socio.nome)}</div>
+    ${mark}
     <div>
       <div class="partner-spotlight__cargo">${socio.cargo}</div>
       <h2>${socio.nome}</h2>

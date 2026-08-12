@@ -13,7 +13,9 @@ module.exports = function socioDetail(socio) {
         { label: socio.nome },
       ])}
       <div style="display:flex; gap: var(--size-8); flex-wrap: wrap; align-items:center">
-        <div class="partner-spotlight__mark" style="width:180px;height:225px;flex-shrink:0" aria-hidden="true">${initials(socio.nome)}</div>
+        ${socio.foto
+          ? `<img class="partner-spotlight__mark" style="width:180px;height:225px;flex-shrink:0" src="${socio.foto}" alt="${socio.nome}" width="180" height="225">`
+          : `<div class="partner-spotlight__mark" style="width:180px;height:225px;flex-shrink:0" aria-hidden="true">${initials(socio.nome)}</div>`}
         <div style="flex:1; min-width:280px">
           <span class="eyebrow">${socio.cargo}</span>
           <h1>${socio.nome}</h1>

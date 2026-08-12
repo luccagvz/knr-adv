@@ -178,6 +178,7 @@
   font-size: 5rem;
   color: rgba(255,255,255,0.9);
   border: 1px solid var(--color-border-dark);
+  object-fit: cover;
 }
 .partner-spotlight__cargo { color: #93a9d9; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; margin-bottom: var(--size-3); }
 .partner-spotlight h2 { color: var(--color-white); margin-bottom: var(--size-4); }
@@ -222,6 +223,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 /* ===== Depoimentos — seção escura editorial ===== */

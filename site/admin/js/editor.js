@@ -25,9 +25,36 @@ let coverImageUrl = '';
 let slugTouchedManually = false;
 let quill;
 
+function escapeHtml(value) {
+  if (value === null || value === undefined) return '';
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function showAlert(message, type) {
-  alertBox.innerHTML = `<div class="form-alert form-alert--${type}">${message}</div>`;
+  alertBox.innerHTML = `<div class="form-alert form-alert--${type}">${escapeHtml(message)}</div>`;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// cover_image vem do banco — em uso normal é sempre uma URL do Storage
+// gerada pelo próprio upload, mas RLS só controla QUEM escreve, não O QUE é
+// escrito, então uma conta admin comprometida poderia gravar um valor
+// arbitrário ali. Construir via DOM (em vez de template string + innerHTML)
+// evita qualquer risco de quebra de atributo.
+function renderCoverPreview(url) {
+  coverPreview.innerHTML = '';
+  if (!url) {
+    coverPreview.textContent = 'Nenhuma imagem';
+    return;
+  }
+  const img = document.createElement('img');
+  img.src = url;
+  img.alt = 'Capa';
+  coverPreview.appendChild(img);
 }
 
 function slugify(text) {
@@ -116,7 +143,7 @@ coverInput.addEventListener('change', async () => {
   coverProgress.textContent = 'Otimizando e enviando…';
   try {
     coverImageUrl = await uploadNewsImage(file, { folder: 'covers', maxWidth: 1600 });
-    coverPreview.innerHTML = `<img src="${coverImageUrl}" alt="Capa">`;
+    renderCoverPreview(coverImageUrl);
     coverProgress.textContent = 'Imagem enviada.';
   } catch (err) {
     coverProgress.textContent = '';
@@ -228,10 +255,21 @@ previewBtn.addEventListener('click', async () => {
   try {
     const saved = await save(currentStatus === 'published' ? 'published' : 'draft', { redirect: false });
     if (!saved) return;
+    // Token vai no header Authorization, não na URL — busca o HTML via fetch
+    // e abre como blob: em vez de navegar direto pra uma URL com o token.
     const sb = getSupabase();
     const { data: { session } } = await sb.auth.getSession();
-    const url = `/.netlify/functions/preview?id=${saved.id}&access_token=${encodeURIComponent(session.access_token)}`;
-    window.open(url, '_blank');
+    const res = await fetch(`/.netlify/functions/preview?id=${encodeURIComponent(saved.id)}`, {
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    });
+    if (!res.ok) {
+      showAlert(`Não foi possível abrir o preview: ${await res.text()}`, 'error');
+      return;
+    }
+    const html = await res.text();
+    const blobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+    window.open(blobUrl, '_blank');
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
   } finally {
     previewBtn.disabled = false;
     previewBtn.textContent = 'Visualizar';
@@ -255,6 +293,13 @@ async function loadExisting() {
     showAlert(`Não foi possível carregar essa notícia: ${error.message}`, 'error');
     return;
   }
+  if (!window.DOMPurify) {
+    // Sem o sanitizador não dá pra carregar o conteúdo com segurança — melhor
+    // travar a edição do que arriscar sobrescrever a notícia com o campo vazio.
+    showAlert('Não foi possível carregar o editor de texto com segurança (DOMPurify não carregou — verifique sua conexão e recarregue a página). Edição bloqueada por segurança.', 'error');
+    form.querySelectorAll('input, textarea, select, button').forEach((el) => (el.disabled = true));
+    return;
+  }
   titleInput.value = data.title;
   slugInput.value = data.slug;
   slugPreview.textContent = data.slug;
@@ -265,8 +310,8 @@ async function loadExisting() {
   seoTitleInput.value = data.seo_title || '';
   seoDescriptionInput.value = data.seo_description || '';
   coverImageUrl = data.cover_image || '';
-  if (coverImageUrl) coverPreview.innerHTML = `<img src="${coverImageUrl}" alt="Capa">`;
-  quill.root.innerHTML = data.content || '';
+  renderCoverPreview(coverImageUrl);
+  quill.root.innerHTML = DOMPurify.sanitize(data.content || '');
   currentStatus = data.status;
   statusLabel.textContent = currentStatus === 'published' ? 'publicado' : 'rascunho';
   deleteBtn.style.display = 'inline-flex';

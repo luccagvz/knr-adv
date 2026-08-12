@@ -9,3 +9,27 @@
 
 # SUPABASE_URL, SUPABASE_ANON_KEY e NETLIFY_BUILD_HOOK_URL são configuradas
 # em Site settings → Environment variables no Netlify (não aqui).
+
+# Headers de segurança — uma única política pra todo o site (site público +
+# /admin) pra evitar o comportamento de merge de múltiplos blocos de headers
+# do Netlify quando os paths se sobrepõem (/admin/* também casa com /*).
+# A CSP é a união do que o site público precisa (praticamente nada externo)
+# e do que o /admin precisa (jsdelivr pro Supabase JS/Quill/DOMPurify, e o
+# próprio projeto Supabase pra API/Storage/Auth). Se o projeto Supabase for
+# trocado, atualize a URL abaixo.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; img-src 'self' data: https://cnzailctwsuwkqacpknm.supabase.co; font-src 'self'; connect-src 'self' https://cnzailctwsuwkqacpknm.supabase.co; frame-src https://www.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), camera=(), microphone=(), payment=(), usb=(), interest-cohort=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# Reforço extra só no /admin — nunca deve ser indexado, mesmo que a meta tag
+# de alguma página seja removida por engano no futuro.
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"

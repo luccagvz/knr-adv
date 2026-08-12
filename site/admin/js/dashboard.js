@@ -6,7 +6,7 @@ const tbody = document.getElementById('news-tbody');
 const alertBox = document.getElementById('alert-box');
 
 function showAlert(message, type) {
-  alertBox.innerHTML = `<div class="form-alert form-alert--${type}">${message}</div>`;
+  alertBox.innerHTML = `<div class="form-alert form-alert--${type}">${escapeHtml(message)}</div>`;
   setTimeout(() => (alertBox.innerHTML = ''), 5000);
 }
 
@@ -21,11 +21,37 @@ function statusLabel(status) {
   return { draft: 'Rascunho', published: 'Publicado', scheduled: 'Agendado', archived: 'Arquivado' }[status] || status;
 }
 
-function previewUrl(id) {
+// title/category vêm do banco (texto livre escrito por qualquer conta admin)
+// e são inseridos via innerHTML abaixo — precisam ser escapados aqui, senão
+// uma notícia com um título malicioso executaria JS na sessão de quem
+// estiver olhando o dashboard.
+function escapeHtml(value) {
+  if (value === null || value === undefined) return '';
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// O token vai no header Authorization (não numa query string) pra não parar
+// em logs de acesso — por isso busca o HTML via fetch e abre como blob:,
+// em vez de simplesmente navegar pra uma URL com o token embutido.
+async function openPreview(id) {
   const sb = getSupabase();
-  return sb.auth.getSession().then(({ data: { session } }) => {
-    return `/.netlify/functions/preview?id=${id}&access_token=${encodeURIComponent(session.access_token)}`;
+  const { data: { session } } = await sb.auth.getSession();
+  const res = await fetch(`/.netlify/functions/preview?id=${encodeURIComponent(id)}`, {
+    headers: { Authorization: `Bearer ${session.access_token}` },
   });
+  if (!res.ok) {
+    showAlert(`Não foi possível abrir o preview: ${await res.text()}`, 'error');
+    return;
+  }
+  const html = await res.text();
+  const blobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+  window.open(blobUrl, '_blank');
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
 }
 
 function render() {
@@ -39,8 +65,8 @@ function render() {
   tbody.innerHTML = rows
     .map((n) => `
       <tr data-id="${n.id}">
-        <td class="admin-table__title">${n.title}</td>
-        <td>${n.category || '—'}</td>
+        <td class="admin-table__title">${escapeHtml(n.title)}</td>
+        <td>${escapeHtml(n.category) || '—'}</td>
         <td>${formatDateBR(n.published_at || n.created_at)}</td>
         <td>${formatDateBR(n.updated_at)}</td>
         <td><span class="status-badge status-badge--${n.status}">${statusLabel(n.status)}</span></td>
@@ -121,8 +147,7 @@ tbody.addEventListener('click', async (e) => {
   btn.disabled = true;
   try {
     if (action === 'preview') {
-      const url = await previewUrl(id);
-      window.open(url, '_blank');
+      await openPreview(id);
     } else if (action === 'publish') {
       await handlePublish(id);
     } else if (action === 'unpublish') {
