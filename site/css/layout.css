@@ -59,7 +59,11 @@
   background: var(--color-white);
   position: sticky;
   top: 0;
-  z-index: 100;
+  /* Precisa ficar acima do overlay do menu mobile (z-index 200) — o menu é
+     movido pra fora do header em telas pequenas (ver js/main.js), então o
+     botão de abrir/fechar (dentro do header) só continua visível por cima
+     do overlay se o header em si tiver um z-index maior. */
+  z-index: 300;
   transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
 }
 .site-header__inner {
@@ -135,6 +139,15 @@
   .site-nav {
     position: fixed;
     inset: 0;
+    /* Reforça o tamanho explicitamente — em algumas versões do Safari/WebKit
+       um elemento fixed que também é filho de um container flex (o
+       .site-header__inner) não preenche a tela só com inset:0, ele herda a
+       altura do próprio flex item original. 100vh como fallback pra
+       navegadores sem suporte a dvh (unidade "dinâmica", mais precisa no
+       mobile por já descontar a barra de endereço). */
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
     z-index: 200;
     background: var(--navy-950);
     display: flex;

@@ -21,17 +21,35 @@
   var toggle = document.querySelector('[data-nav-toggle]');
   var nav = document.querySelector('[data-nav]');
   if (toggle && nav) {
+    // Bug do Safari/WebKit: um menu fixed cujo ancestral é um header
+    // sticky/flex não preenche a tela corretamente (fica preso na posição
+    // do header em vez da viewport). Movendo o menu pra ser filho direto
+    // do <body> só enquanto está aberto evita qualquer ancestral no meio.
+    var navParent = nav.parentNode;
+    var navNextSibling = nav.nextSibling;
+
+    function openNav() {
+      document.body.appendChild(nav);
+      nav.classList.add('is-open');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeNav() {
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      window.setTimeout(function () {
+        if (navNextSibling) navParent.insertBefore(nav, navNextSibling);
+        else navParent.appendChild(nav);
+      }, 550); // espera a transição de fechar terminar antes de mover de volta
+    }
+
     toggle.addEventListener('click', function () {
-      var isOpen = nav.classList.toggle('is-open');
-      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      document.body.style.overflow = isOpen ? 'hidden' : '';
+      if (nav.classList.contains('is-open')) closeNav();
+      else openNav();
     });
     nav.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        nav.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
+      link.addEventListener('click', closeNav);
     });
   }
 
