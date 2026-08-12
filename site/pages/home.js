@@ -1,7 +1,6 @@
 const layout = require('../components/layout');
 const heroCinematic = require('../components/heroCinematic');
 const areaListEditorial = require('../components/areaListEditorial');
-const partnerSpotlight = require('../components/partnerSpotlight');
 const leadershipList = require('../components/leadershipList');
 const testimonialLarge = require('../components/testimonialLarge');
 const articleCard = require('../components/articleCard');
@@ -17,8 +16,6 @@ const insights = require('../content/insights');
 module.exports = function home({ recentesCarrossel = [] } = {}) {
   const destaqueAreas = areas.filter((a) => a.destaque);
   const recentInsights = insights.slice(0, 3);
-  const founder = socios[0];
-  const others = socios.slice(1);
 
   const content = `
   ${heroCinematic({
@@ -89,8 +86,7 @@ module.exports = function home({ recentesCarrossel = [] } = {}) {
         <span class="eyebrow">Sócios</span>
         <h2>Quem conduz a atuação da KNR</h2>
       </div>
-      ${partnerSpotlight(founder)}
-      ${leadershipList(others)}
+      ${leadershipList(socios)}
     </div>
   </section>
 

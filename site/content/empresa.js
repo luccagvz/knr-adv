@@ -4,9 +4,7 @@ module.exports = {
   sigla: 'KNR',
   telefone: '(71) 3021-0307',
   telefoneHref: '+557130210307',
-  // TODO: o site atual não publica um e-mail de contato. Preencher com o
-  // endereço real antes de publicar — o mailto: do formulário depende disso.
-  email: 'contato@knr.adv.br', // PLACEHOLDER — substituir pelo e-mail real
+  email: 'contato@knr.adv.br',
   endereco: {
     linha1: 'Rua Frederico Simões, nº 153',
     linha2: 'Ed. Empresarial Orlando Gomes, salas 601/614',
@@ -53,6 +51,7 @@ module.exports = {
   idiomas: ['Português', 'English', 'Español'],
   redesSociais: {
     facebook:
-      'https://www.facebook.com/pages/Kruschewsky-Nunes-Ribeiro-Advogados-Associados/333860693320286',
+      'https://web.facebook.com/people/Kruschewsky-Nunes-Ribeiro-Advogados-Associados/100063103815361/',
+    instagram: 'https://www.instagram.com/knradvogados/',
   },
 };

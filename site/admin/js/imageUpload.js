@@ -5,12 +5,41 @@
 const IMAGE_ACCEPT = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10MB — validado de novo no bucket (RLS/config)
 
-function validateImageFile(file) {
+// O `file.type` do navegador costuma vir da extensão do arquivo, não do
+// conteúdo real — um .html renomeado pra .jpg reportaria image/jpeg. Os
+// primeiros bytes (assinatura/"magic number") não mentem: confirmam que o
+// arquivo É de fato o formato que ele diz ser, antes de gastar tempo
+// decodificando/re-processando.
+async function readMagicBytes(file, length = 12) {
+  const buf = await file.slice(0, length).arrayBuffer();
+  return new Uint8Array(buf);
+}
+
+function matchesSignature(bytes, mimeType) {
+  const b = bytes;
+  if (mimeType === 'image/jpeg') return b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff;
+  if (mimeType === 'image/png') {
+    const png = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
+    return png.every((byte, i) => b[i] === byte);
+  }
+  if (mimeType === 'image/webp') {
+    const riff = [0x52, 0x49, 0x46, 0x46]; // "RIFF"
+    const webp = [0x57, 0x45, 0x42, 0x50]; // "WEBP"
+    return riff.every((byte, i) => b[i] === byte) && webp.every((byte, i) => b[i + 8] === byte);
+  }
+  return false;
+}
+
+async function validateImageFile(file) {
   if (!IMAGE_ACCEPT.includes(file.type)) {
     throw new Error('Formato não suportado. Envie JPG, PNG ou WebP.');
   }
   if (file.size > MAX_UPLOAD_BYTES) {
     throw new Error('Imagem maior que 10MB. Escolha um arquivo menor.');
+  }
+  const bytes = await readMagicBytes(file);
+  if (!matchesSignature(bytes, file.type)) {
+    throw new Error('Esse arquivo não parece ser uma imagem válida do formato indicado (a extensão pode estar enganando o navegador).');
   }
 }
 
@@ -53,7 +82,7 @@ function slugifyFilename(name) {
 
 // maxWidth: 1600 pra capa, 1000 pra imagens dentro do conteúdo.
 async function uploadNewsImage(file, { folder = 'content', maxWidth = 1000 } = {}) {
-  validateImageFile(file);
+  await validateImageFile(file);
   const { blob } = await resizeAndCompress(file, { maxWidth });
 
   const sb = getSupabase();

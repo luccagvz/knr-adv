@@ -2,6 +2,8 @@
 // Nunca usa service role key — só repassa o token do usuário logado pro
 // Supabase e deixa o RLS decidir. Ver site/sql/001_news_cms.sql.
 
+const { isValidUuid } = require('./_http');
+
 async function getAuthedAdmin(accessToken) {
   const url = process.env.SUPABASE_URL;
   const anonKey = process.env.SUPABASE_ANON_KEY;
@@ -13,9 +15,10 @@ async function getAuthedAdmin(accessToken) {
   });
   if (!userRes.ok) return null;
   const user = await userRes.json();
+  if (!user || !isValidUuid(user.id)) return null;
 
   const adminRes = await fetch(
-    `${url}/rest/v1/admin_users?select=user_id&user_id=eq.${user.id}`,
+    `${url}/rest/v1/admin_users?select=user_id&user_id=eq.${encodeURIComponent(user.id)}`,
     { headers: { apikey: anonKey, Authorization: `Bearer ${accessToken}` } }
   );
   if (!adminRes.ok) return null;

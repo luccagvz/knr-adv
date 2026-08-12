@@ -2,20 +2,22 @@
 module.exports = [
   {
     slug: 'marcelo-kruschewsky',
+    foto: '/img/socios/marcelo-kruschewsky.webp',
     nome: 'Marcelo Kruschewsky',
-    cargo: 'Sócio-Fundador',
-    areas: ['Trabalhista'],
+    cargo: 'Sócio',
+    areas: ['Trabalhista', 'Societário'],
     formacao: [
       'Bacharel em Direito pela Faculdade de Tecnologia e Ciências – FTC (2007)',
       'Inscrito na OAB/BA sob o nº 24.003',
     ],
-    bio: 'Ocupou o cargo de Country Manager do Fiesta Hotel Group antes de se dedicar à advocacia. Sócio do escritório Kruschewsky & Nunes Ribeiro Advogados Associados, atua como advogado na área Trabalhista.',
+    bio: 'Ocupou o cargo de Country Manager do Fiesta Hotel Group antes de se dedicar à advocacia. Sócio do escritório Kruschewsky & Nunes Ribeiro Advogados Associados, atua como advogado nas áreas Trabalhista e Societário.',
   },
   {
     slug: 'diego-ribeiro',
+    foto: '/img/socios/diego-ribeiro.webp',
     nome: 'Diego Ribeiro',
     cargo: 'Sócio',
-    areas: ['Cível'],
+    areas: ['Cível', 'Imobiliário'],
     formacao: [
       'Bacharel em Direito pela Faculdade de Direito do Centro Universitário da Bahia – FIB (2005)',
       'Inscrito na OAB/BA sob o nº 22.096',
@@ -23,13 +25,14 @@ module.exports = [
       'Mestre em Ciências Políticas – Faculdade de Direito da Universidade de Coimbra (2009)',
       'Pós-graduando em Direito Eleitoral com Habilitação em Magistério Superior – Faculdades Integradas Ipitanga Unibahia Fundacem',
     ],
-    bio: 'Ocupou o cargo de Procurador Geral do Município de Itaparica/BA. Membro da Comissão de Relações Internacionais da OAB/BA no triênio 2007/2009 e da Comissão de Seleção e Estágio da OAB/BA no triênio 2013/2015. Juiz Eleitoral Substituto do Tribunal Regional Eleitoral da Bahia. Sócio do escritório, atua como advogado na área Cível.',
+    bio: 'Ocupou o cargo de Procurador Geral do Município de Itaparica/BA. Membro da Comissão de Relações Internacionais da OAB/BA no triênio 2007/2009 e da Comissão de Seleção e Estágio da OAB/BA no triênio 2013/2015. Juiz Eleitoral Substituto do Tribunal Regional Eleitoral da Bahia. Sócio do escritório, atua como advogado nas áreas Cível e Imobiliário.',
   },
   {
     slug: 'sergio-nunes',
+    foto: '/img/socios/sergio-nunes.webp',
     nome: 'Sérgio Nunes',
     cargo: 'Sócio',
-    areas: ['Cível'],
+    areas: ['Cível', 'Direitos Autorais'],
     formacao: [
       'Bacharel em Direito pela Universidade Católica do Salvador – UCSAL (2002)',
       'Inscrito na OAB/BA sob o nº 18.667',
@@ -37,10 +40,11 @@ module.exports = [
       'Especialização em Direitos Humanos – Escola Superior do Ministério Público da Bahia',
       'Pós-graduando em Direito do Estado – Escola da Magistratura da Bahia',
     ],
-    bio: 'Ocupou o cargo de Assessor Jurídico do Tribunal de Justiça da Bahia (09/2003 a 05/2009). Sócio do escritório, atua como advogado na área Cível.',
+    bio: 'Ocupou o cargo de Assessor Jurídico do Tribunal de Justiça da Bahia (09/2003 a 05/2009). Sócio do escritório, atua como advogado nas áreas Cível e Direitos Autorais.',
   },
   {
     slug: 'juliana-andrade-gavazza',
+    foto: '/img/socios/juliana-andrade-gavazza.webp',
     nome: 'Juliana Andrade Gavazza',
     cargo: 'Sócia',
     areas: ['Tributária', 'Aduaneira', 'Administrativa'],
@@ -53,6 +57,7 @@ module.exports = [
   },
   {
     slug: 'carmen-dolores-bittencourt',
+    foto: '/img/socios/carmen-dolores-bittencourt.webp',
     nome: 'Carmen Dolores Bittencourt',
     cargo: 'Sócia — Coordenadora do Núcleo Penal',
     areas: ['Penal'],

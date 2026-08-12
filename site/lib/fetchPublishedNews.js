@@ -1,4 +1,5 @@
 const { sanitizeNewsContent } = require('./sanitizeNews');
+const { escapeHtml, safeSlug, safeUrl } = require('./safeText');
 
 function toDateOnly(isoTimestamp) {
   if (!isoTimestamp) return null;
@@ -7,17 +8,24 @@ function toDateOnly(isoTimestamp) {
 
 // Converte uma linha da tabela `news` (Supabase) pro formato que
 // insightsIndex()/insightDetail()/articleCard() já sabem renderizar.
+//
+// IMPORTANTE: título, resumo, categoria e campos de SEO são texto livre
+// escrito por qualquer conta admin (RLS controla QUEM escreve, não O QUE é
+// escrito) e vão direto pra templates HTML via interpolação de string — por
+// isso são escapados aqui, no único ponto que alimenta tanto o build quanto
+// o preview. `conteudo` é diferente: é HTML rico de propósito (rendered do
+// Quill) e passa por sanitizeNewsContent (allowlist de tags), não por escape.
 function toInsightShape(row) {
   return {
-    slug: row.slug,
-    imagem: row.cover_image || '',
-    titulo: row.title,
+    slug: safeSlug(row.slug),
+    imagem: safeUrl(row.cover_image),
+    titulo: escapeHtml(row.title),
     data: toDateOnly(row.published_at) || toDateOnly(row.created_at),
-    categoria: row.category || 'Institucional',
-    resumo: row.excerpt || '',
+    categoria: escapeHtml(row.category || 'Institucional'),
+    resumo: escapeHtml(row.excerpt || ''),
     conteudo: sanitizeNewsContent(row.content),
-    seoTitle: row.seo_title || row.title,
-    seoDescription: row.seo_description || row.excerpt || '',
+    seoTitle: escapeHtml(row.seo_title || row.title),
+    seoDescription: escapeHtml(row.seo_description || row.excerpt || ''),
   };
 }
 
@@ -50,7 +58,15 @@ async function fetchPublishedNews() {
     }
 
     const rows = await res.json();
-    return rows.map(toInsightShape);
+    const insights = rows.map(toInsightShape);
+
+    // slug inválido não pode virar rota — filtra e avisa em vez de gerar
+    // uma página em /insights/ (colidindo com o próprio índice).
+    const valid = insights.filter((i) => i.slug);
+    if (valid.length < insights.length) {
+      console.warn(`[fetchPublishedNews] ${insights.length - valid.length} notícia(s) com slug inválido foram ignoradas no build.`);
+    }
+    return valid;
   } catch (err) {
     console.warn(`[fetchPublishedNews] Falha ao buscar notícias do Supabase: ${err.message}`);
     return [];
