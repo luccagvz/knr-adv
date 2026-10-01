@@ -45,7 +45,7 @@ module.exports = [
   {
     slug: 'juliana-andrade-gavazza',
     foto: '/img/socios/juliana-andrade-gavazza.webp',
-    nome: 'Juliana Andrade Gavazza',
+    nome: 'Juliana Gavazza',
     cargo: 'Sócia',
     areas: ['Tributária', 'Aduaneira', 'Administrativa'],
     formacao: [

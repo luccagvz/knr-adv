@@ -23,7 +23,7 @@ module.exports = function sociosIndex() {
 
   return layout({
     title: 'Sócios',
-    description: 'Conheça os sócios da KNR Advogados: Marcelo Kruschewsky, Diego Ribeiro, Sérgio Nunes, Juliana Andrade Gavazza e Carmen Dolores Bittencourt.',
+    description: 'Conheça os sócios da KNR Advogados: Marcelo Kruschewsky, Diego Ribeiro, Sérgio Nunes, Juliana Gavazza e Carmen Dolores Bittencourt.',
     path: '/socios/',
     content,
   });
